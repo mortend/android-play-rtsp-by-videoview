@@ -3,6 +3,7 @@ package rtsp.example.com.rtspsample;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,6 +25,18 @@ public class MainActivity extends Activity implements OnClickListener {
         videoView = (VideoView) this.findViewById(R.id.rtspVideo);
         playButton = (Button) this.findViewById(R.id.playButton);
         playButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!PermissionHelper.havePermissions(this)) {
+            Log.d("RTSP_PLAYER", "FAIL - We need permissions!");
+            PermissionHelper.requestPermissions(this);
+            return;
+        }
+
+        Log.d("RTSP_PLAYER", "OK - We have permissions!");
     }
 
     @Override
